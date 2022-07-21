@@ -18,15 +18,10 @@ class Checkbox extends FlxSprite {
         animation.addByPrefix('check', 'CheckboxChecked', 24, false);
         scrollFactor.set();
         scale = new flixel.math.FlxPoint(0.1, 0.1);
+        FlxTween.tween(this.scale, {x:0.5, y:0.5}, 1, { ease: FlxEase.quadInOut, type: FlxTween.ONESHOT } );
         updateHitbox();
         centerOffsets();
         boundOption = option;
-        if (boundOption == true) {
-            animation.play('check');
-        }
-        else {
-            animation.play('idle');
-        }
         trace("My option is value: " + boundOption);
         updateHitbox();
         centerOffsets();
@@ -36,18 +31,15 @@ class Checkbox extends FlxSprite {
         super.update(elapsed);
 
         if (sprTracker != null)
-			setPosition(sprTracker.x + sprTracker.width + 20, sprTracker.y - 30);
+			setPosition(sprTracker.x + sprTracker.width + 60, sprTracker.y + 10);
     }
 
-    public function toggle() {
-        boundOption = !boundOption;
-        // Hahah, copypasting cuz i'm lazy to make a function for this
-        switch (boundOption) {
-            case true:
-                animation.play("check", true);
-            case false:
-                animation.play("idle", true);
+    public function refresh() {
+        if (boundOption == true) {
+            animation.play('check', true, false);
         }
-        trace("My option is value: " + boundOption);
+        else if (boundOption == false) {
+            animation.play('check', true, true);
+        }
     }
 }

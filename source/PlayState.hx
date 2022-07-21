@@ -569,13 +569,9 @@ class PlayState extends MusicBeatState
 			switch (curStage) {
 				case 'limo':
 					gfVersion = 'gf-car';
-				case 'mall':
+				case 'mall' | 'mallEvil':
 					gfVersion = 'gf-christmas';
-				case 'mallEvil':
-					gfVersion = 'gf-christmas';
-				case 'school':
-					gfVersion = 'gf-pixel';
-				case 'schoolEvil':
+				case 'school' | 'schoolEvil':
 					gfVersion = 'gf-pixel';
 				default:
 					gfVersion = 'gf';

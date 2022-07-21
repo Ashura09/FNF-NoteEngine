@@ -110,7 +110,9 @@ class OptionsMenu extends MusicBeatState
 
 		if (accepted)
 		{
-			checkboxes[curSelected].toggle();
+			optionBools[curSelected] = !optionBools[curSelected];
+			checkboxes[curSelected].refresh();
+			trace(optionBools[curSelected]);
 		}
 	}
 
