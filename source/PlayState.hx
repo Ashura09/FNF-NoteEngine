@@ -5,6 +5,7 @@ import Song.SwagSong;
 import WiggleEffect.WiggleEffectType;
 import Replay.ReplayFile;
 import Replay.ReplayInput;
+import Replay.ReplayParser;
 import Assets.FNFAssets;
 import flixel.FlxBasic;
 import flixel.FlxCamera;
@@ -56,6 +57,9 @@ class PlayState extends MusicBeatState
 	public static var storyDifficulty:Int = 1;
 	public static var isPixelStage:Bool = false;
 	public static var STRUM_X = 42;
+
+	public var replayparser:ReplayParser;
+	public static var isReplaying = false;
 
 	var halloweenLevel:Bool = false;
 
@@ -156,6 +160,8 @@ class PlayState extends MusicBeatState
 	{
 		instance = this;
 		replay = new ReplayFile();
+		if (isReplaying) trace("*** REPLAY MODE ***");
+		else trace("*** RECORD MODE ***");
 
 		// var gameCam:FlxCamera = FlxG.camera;
 		camGame = new FlxCamera();
@@ -907,6 +913,8 @@ class PlayState extends MusicBeatState
 		}
 
 		super.create();
+
+		replayparser = new ReplayParser();
 	}
 
 	function schoolIntro(?dialogueBox:DialogueBox):Void
@@ -1922,7 +1930,7 @@ class PlayState extends MusicBeatState
 		FlxG.sound.music.volume = 0;
 		vocals.volume = 0;
 		#if sys
-		sys.io.File.saveContent(FNFAssets.ReplayPath('replay.rpl'), replay.toString());
+		sys.io.File.saveContent(FNFAssets.ReplayPath('replay.rpl'), /*SONG.song + curDifficulty + ";" + */replay.toString());
 		#end
 		if (SONG.validScore)
 		{
@@ -2185,31 +2193,65 @@ class PlayState extends MusicBeatState
 	// I copied the input system from kade engine, and slightly edited it
 
 	private function keyShit():Void
-		{
+		{	
+			var replayAccuracy = 10000;
+
+			var controlArray:Array<Bool> = [];
+			var controlHoldArray:Array<Bool> = [];
+			var controlReleaseArray:Array<Bool> = [];
+
 			// HOLDING
 			var up = controls.UP;
 			var right = controls.RIGHT;
 			var down = controls.DOWN;
 			var left = controls.LEFT;
-	
+			
 			var upP = controls.UP_P;
 			var rightP = controls.RIGHT_P;
 			var downP = controls.DOWN_P;
 			var leftP = controls.LEFT_P;
-	
+			
 			var upR = controls.UP_R;
 			var rightR = controls.RIGHT_R;
 			var downR = controls.DOWN_R;
 			var leftR = controls.LEFT_R;
-	
-			var controlArray:Array<Bool> = [leftP, downP, upP, rightP];
-			var controlHoldArray:Array<Bool> = [left, down, up, right];
-			var controlReleaseArray:Array<Bool> = [leftR, downR, upR, rightR];
+
+			if (!isReplaying) {
+				controlArray = [leftP, downP, upP, rightP];
+				controlHoldArray = [left, down, up, right];
+				controlReleaseArray = [leftR, downR, upR, rightR];
+			}
+			else if (isReplaying) {
+				controlArray = [false, false, false, false];
+				controlHoldArray = [false, false, false, false];
+				controlReleaseArray = [false, false, false, false];
+			}
+
+			if (isReplaying) {
+				if (isReplaying) {
+					for (i in 0...replayparser.inputs.length) {
+						if (replayparser.inputs[i].strumTime == Math.floor(songPercent * replayAccuracy)) {
+							controlArray[replayparser.inputs[i].noteData] = true;
+							controlHoldArray[replayparser.inputs[i].noteData] = true;
+							trace("Simulating press at: " + replayparser.inputs[i].noteData + ", " + replayparser.inputs[i].strumTime);
+							new FlxTimer().start(replayparser.inputs[i].holdTime, function(timer:FlxTimer) {
+								controlArray[replayparser.inputs[i].noteData] = false;
+								controlHoldArray[replayparser.inputs[i].noteData] = false;
+								trace("Simulating release at: " + replayparser.inputs[i].noteData + ", " + replayparser.inputs[i].strumTime);
+							});
+						}
+					}
+					/**/
+				}
+			}
 
 			var possibleNotes:Array<Note> = [];
 	
-			if (controlArray.contains(true)) {
-				replay.inputs.push(new ReplayInput(controlArray.indexOf(true), songPercent, 10));
+			if (!isReplaying) {
+				if (controlArray.contains(true)) {
+					replay.inputs.push(new ReplayInput(controlArray.indexOf(true), songPercent * replayAccuracy, 0.25));
+					trace("Recording press: " + controlArray.indexOf(true) + ", " + songPercent * replayAccuracy + ", " + 0.25);
+				}
 			}
 
 			if (!boyfriend.stunned && generatedMusic)
@@ -2299,30 +2341,29 @@ class PlayState extends MusicBeatState
 					boyfriend.playAnim('idle');
 				}
 			}
-	
 			playerStrums.forEach(function(spr:FlxSprite)
 			{
 				switch (spr.ID)
 				{
 					case 0:
-						if (leftP && spr.animation.curAnim.name != 'confirm')
+						if (controlHoldArray[0] && spr.animation.curAnim.name != 'confirm')
 							spr.animation.play('pressed');
-						if (leftR)
+						if (controlReleaseArray[0])
 							spr.animation.play('static');
 					case 1:
-						if (downP && spr.animation.curAnim.name != 'confirm')
+						if (controlHoldArray[1] && spr.animation.curAnim.name != 'confirm')
 							spr.animation.play('pressed');
-						if (downR)
+						if (controlReleaseArray[1])
 							spr.animation.play('static');
 					case 2:
-						if (upP && spr.animation.curAnim.name != 'confirm')
+						if (controlHoldArray[2] && spr.animation.curAnim.name != 'confirm')
 							spr.animation.play('pressed');
-						if (upR)
+						if (controlReleaseArray[2])
 							spr.animation.play('static');
 					case 3:
-						if (rightP && spr.animation.curAnim.name != 'confirm')
+						if (controlHoldArray[3] && spr.animation.curAnim.name != 'confirm')
 							spr.animation.play('pressed');
-						if (rightR)
+						if (controlReleaseArray[3])
 							spr.animation.play('static');
 				}
 				if (spr.animation.curAnim.name == 'confirm' && !curStage.startsWith('school'))

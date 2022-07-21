@@ -19,7 +19,7 @@ class PauseSubState extends MusicBeatSubstate
 {
 	var grpMenuShit:FlxTypedGroup<Alphabet>;
 
-	var menuItems:Array<String> = ['Resume', 'Restart Song', 'Modifiers', 'Exit to menu'];
+	var menuItems:Array<String> = ['Resume', 'Restart Song', 'Modifiers', 'Toggle Replay', 'Exit to menu'];
 	var modifierItems:Array<String> = ['Back', 'Toggle Botplay', 'Toggle Nofail', 'Toggle Instakill'];
 	var curSelected:Int = 0;
 
@@ -113,14 +113,14 @@ class PauseSubState extends MusicBeatSubstate
 					case "Resume":
 						close();
 					case "Restart Song":
-						FlxTween.tween(PlayState.camHUD, {alpha: 0.0}, 0.45, {ease: FlxEase.circInOut});
-						new FlxTimer().start(0.45, function(tmr:FlxTimer) {
-							FlxG.resetState();
-						});			
+						restart();		
 					case "Exit to menu":
 						FlxG.switchState(new MainMenuState());
 					case "Modifiers":
 						loadModifiers();	
+					case "Toggle Replay":
+						PlayState.isReplaying = !PlayState.isReplaying;
+						restart();
 				}
 			}
 			else {
@@ -143,6 +143,13 @@ class PauseSubState extends MusicBeatSubstate
 			// for reference later!
 			// PlayerSettings.player1.controls.replaceBinding(Control.LEFT, Keys, FlxKey.J, null);
 		}
+	}
+
+	function restart() {
+		FlxTween.tween(PlayState.camHUD, {alpha: 0.0}, 0.45, {ease: FlxEase.circInOut});
+		new FlxTimer().start(0.45, function(tmr:FlxTimer) {
+			FlxG.resetState();
+		});	
 	}
 
 	function loadModifiers()
