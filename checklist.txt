@@ -1,0 +1,12 @@
+# Main shit
+	Graphical shit
+	Fix inputs
+	Modding simplyfying 1/5
+	Move some code in places
+# Secondary swag shit
+	Options
+	Watermarks
+	Note splashes 4/5
+	Achievements
+	Bot Play 4/5
+	

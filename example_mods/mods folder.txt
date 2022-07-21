@@ -1,0 +1,2 @@
+This is mods folder for NoteEngine. NoteEngine supports mods unlike orginal FNF. Put here mods (currently songs and mods) you don't need to create another folder. 
+Just create a folder in songs folder. And a folder with the same name in charts. It will appear in freeplay after official songs.
