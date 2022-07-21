@@ -13,4 +13,7 @@ class FNFAssets {
     public static function JSONPath(subfolder:String) {
         return "assets/data/" + subfolder;
     }
+    public static function ReplayPath(subfolder:String) {
+        return "assets/replays/" + subfolder;
+    }
 }

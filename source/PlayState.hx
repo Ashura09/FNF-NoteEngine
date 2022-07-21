@@ -3,6 +3,9 @@ import NoteSplashes.NoteSplash;
 import Section.SwagSection;
 import Song.SwagSong;
 import WiggleEffect.WiggleEffectType;
+import Replay.ReplayFile;
+import Replay.ReplayInput;
+import Assets.FNFAssets;
 import flixel.FlxBasic;
 import flixel.FlxCamera;
 import flixel.FlxG;
@@ -65,6 +68,7 @@ class PlayState extends MusicBeatState
 	private var notes:FlxTypedGroup<Note>;
 	private var unspawnNotes:Array<Note> = [];
 	private var ratingsData:Array<Rating> = [];
+	private var replay:ReplayFile;
 
 	private var strumLine:FlxSprite;
 	private var curSection:Int = 0;
@@ -151,6 +155,7 @@ class PlayState extends MusicBeatState
 	override public function create()
 	{
 		instance = this;
+		replay = new ReplayFile();
 
 		// var gameCam:FlxCamera = FlxG.camera;
 		camGame = new FlxCamera();
@@ -1916,6 +1921,9 @@ class PlayState extends MusicBeatState
 		canPause = false;
 		FlxG.sound.music.volume = 0;
 		vocals.volume = 0;
+		#if sys
+		sys.io.File.saveContent(FNFAssets.ReplayPath('replay.rpl'), replay.toString());
+		#end
 		if (SONG.validScore)
 		{
 			#if !switch
@@ -2173,6 +2181,8 @@ class PlayState extends MusicBeatState
 	}
 
 	// Making New Input System from scratch! Yay!
+	// Several months:
+	// I copied the input system from kade engine, and slightly edited it
 
 	private function keyShit():Void
 		{
@@ -2198,6 +2208,10 @@ class PlayState extends MusicBeatState
 
 			var possibleNotes:Array<Note> = [];
 	
+			if (controlArray.contains(true)) {
+				replay.inputs.push(new ReplayInput(controlArray.indexOf(true), songPercent, 10));
+			}
+
 			if (!boyfriend.stunned && generatedMusic)
 			{
 				boyfriend.holdTimer = 0;
