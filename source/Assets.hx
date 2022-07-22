@@ -22,4 +22,7 @@ class FNFAssets {
     public static function CharacterPath(subfolder:String) {
         return "assets/chracters/" + subfolder;
     }
+    public static function WeekPath(file:String) {
+        return "assets/weeks/" + file;
+    }
 }

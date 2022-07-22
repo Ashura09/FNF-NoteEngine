@@ -1,5 +1,6 @@
 package;
 
+import Week.WeekLoader;
 import flixel.tweens.misc.ColorTween;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -17,8 +18,8 @@ using StringTools;
 
 class FreeplayState extends MusicBeatState
 {
-	var songs:Array<SongMetadata> = [];
-	var modsongs:Array<SongMetadata> = [];
+	static var songs:Array<SongMetadata> = [];
+	static var modsongs:Array<SongMetadata> = [];
 
 	var selector:FlxText;
 	var curSelected:Int = 0;
@@ -36,9 +37,16 @@ class FreeplayState extends MusicBeatState
 
 	private var iconArray:Array<HealthIcon> = [];
 
+	public static function addWeek(weekSongs:Array<SongMetadata>) {
+		for (i in 0...weekSongs.length) {
+			songs.push(weekSongs[i]);
+		}
+	}
+
 	override function create()
 	{
 		songs = CoolUtil.loadFreeplaySongs('assets/cooltextfiles/freeplaySonglist.txt');	
+		//songs = WeekLoader.loadWeeks();
 
 		var isDebug:Bool = false;
 
@@ -47,7 +55,7 @@ class FreeplayState extends MusicBeatState
 		#end
 
 		#if MOD_EXPERIMENT
-		modsongs = CoolUtil.loadFreeplaySongs('mods/cooltextfiles/freeplaySonglist.txt');
+		//modsongs = CoolUtil.loadFreeplaySongs('mods/cooltextfiles/freeplaySonglist.txt');
 		#end
 
 		//songs = songs.concat(modsongs);
