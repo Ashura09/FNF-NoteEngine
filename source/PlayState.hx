@@ -579,7 +579,7 @@ class PlayState extends MusicBeatState
 
 		var gfVersion:String = '';
 		gfVersion = SONG.gf;
-		trace(gfVersion);
+
 		if (gfVersion == null) {
 			switch (curStage) {
 				case 'limo':
@@ -592,11 +592,10 @@ class PlayState extends MusicBeatState
 					gfVersion = 'gf';
 			}
 		}
-		
 
 		gf = new Character(400, 130, gfVersion);
 		gf.scrollFactor.set(0.95, 0.95);
-
+		
 		dad = new Character(100, 100, SONG.player2);
 
 		var camPos:FlxPoint = new FlxPoint(dad.getGraphicMidpoint().x, dad.getGraphicMidpoint().y);
@@ -678,11 +677,11 @@ class PlayState extends MusicBeatState
 		}
 
 		add(gf);
-
+		
 		// Shitty layering but whatev it works LOL
 		if (curStage == 'limo')
 			add(limo);
-
+		
 		add(dad);
 		add(boyfriend);
 
@@ -693,7 +692,6 @@ class PlayState extends MusicBeatState
 		doof.finishThing = startCountdown;
 
 		Conductor.songPosition = -5000;
-
 
 		strumLine = new FlxSprite(0, Preferences.downscroll ? FlxG.height - 50 - 112: 50).makeGraphic(FlxG.width, 10);
 		strumLine.scrollFactor.set();
@@ -1608,11 +1606,11 @@ class PlayState extends MusicBeatState
 					case 'mom':
 						camFollow.y = dad.getMidpoint().y;
 					case 'senpai':
-						camFollow.y = dad.getMidpoint().y - 430;
-						camFollow.x = dad.getMidpoint().x - 100;
+						camFollow.y = dad.getMidpoint().y - dad.camPos[1];
+						camFollow.x = dad.getMidpoint().x - dad.camPos[0];
 					case 'senpai-angry':
-						camFollow.y = dad.getMidpoint().y - 430;
-						camFollow.x = dad.getMidpoint().x - 100;
+						camFollow.y = dad.getMidpoint().y - dad.camPos[1];
+						camFollow.x = dad.getMidpoint().x - dad.camPos[0];
 				}
 
 				if (dad.curCharacter == 'mom')

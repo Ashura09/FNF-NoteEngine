@@ -51,9 +51,11 @@ class Character extends FlxSprite
 	public var healthColor:Int = 0xFFFF0000;
 
 	public var holdTimer:Float = 0;
+	public var camPos:Array<Float> = [0.0,0.0];
 
 	public function new(x:Float, y:Float, ?character:String = "bf", ?isPlayer:Bool = false)
 	{
+		trace("Pre-super");
 		animOffsets = new Map<String, Array<Dynamic>>();
 		super(x, y);
 
@@ -65,33 +67,27 @@ class Character extends FlxSprite
 
 		switch (curCharacter)
 		{
-			default:
-				trace("Polling Character: " + curCharacter);
+			default:	
 				var path = 'assets/characters/' + curCharacter + '.json';
 				var rawJson = "";
 				#if sys
 				rawJson = sys.io.File.getContent(path);
 				#end
 				var json:CharacterFile = Json.parse(rawJson);
-				trace("JSON Character Loading\nInfo: " + curCharacter + "\nPath: " + path);
 				#if sys
 				if (sys.FileSystem.exists(FNFAssets.ImagePath(json.image + ".xml"))) {
 					frames = FNFAssets.GetSparrowAtlas(FNFAssets.ImagePath(json.image));
-					trace(FNFAssets.ImagePath(json.image) + " ATLAS");
 				}
 				if (sys.FileSystem.exists(FNFAssets.ImagePath(json.image + ".txt"))) {
 					frames = FNFAssets.GetSpriteSheetPacker(FNFAssets.ImagePath(json.image));
-					trace(FNFAssets.ImagePath(json.image) + " PACKER");
 				}
 				#end
 				for (i in 0...json.animations.length) {
 					if (json.animations[i].indices != null && json.animations[i].indices.length > 0) {
 						animation.addByIndices(json.animations[i].anim, json.animations[i].name, json.animations[i].indices, '', json.animations[i].fps, json.animations[i].loop);
-						trace('Indicies animation added!\nInfo:' + json.animations[i].anim + "\nPrefix: " + json.animations[i].name);
 					}
 					else {
 						animation.addByPrefix(json.animations[i].anim, json.animations[i].name, json.animations[i].fps, json.animations[i].loop);
-						trace('Prefix animation added!\nInfo:' + json.animations[i].anim + "\nPrefix: " + json.animations[i].name);
 					}
 					addOffset(json.animations[i].anim, json.animations[i].offsets[0], json.animations[i].offsets[1]);
 				}
@@ -100,12 +96,19 @@ class Character extends FlxSprite
 				y += json.position[1];
 				antialiasing = !json.no_antialiasing;
 				flipX = json.flip_x;
+				camPos[0] = json.camera_position[0];
+				camPos[1] = json.camera_position[1];
 				if (json.scale != 1) {
 					setGraphicSize(Std.int(width * json.scale));
 					updateHitbox();
 				}
+				if (animation.getNameList().contains("danceRight")) {
+					playAnim('danceRight');
+				}
+				else {
+					playAnim('idle');
+				}
 				trace("JSON Character Loaded!\nInfo: " + curCharacter + "\nPath: " + path);
-				trace("Animation list: " + animation.getNameList());
 		}
 
 		dance();
@@ -135,7 +138,6 @@ class Character extends FlxSprite
 
 	override function update(elapsed:Float)
 	{
-		trace("Update loop");
 		if (!curCharacter.startsWith('bf'))
 		{
 			if (animation.curAnim.name.startsWith('sing'))

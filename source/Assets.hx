@@ -5,7 +5,7 @@ class FNFAssets {
         return FlxAtlasFrames.fromSparrow(atlasPath + ".png", atlasPath + ".xml");
     }
     public static function GetSpriteSheetPacker(atlasPath:String) {
-        return FlxAtlasFrames.fromSpriteSheetPacker(atlasPath + ".png", atlasPath + ".xml");
+        return FlxAtlasFrames.fromSpriteSheetPacker(atlasPath + ".png", atlasPath + ".txt");
     }
     public static function ImagePath(subfolder:String) {
         return "assets/images/" + subfolder;
