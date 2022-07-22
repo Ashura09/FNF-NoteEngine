@@ -1934,7 +1934,9 @@ class PlayState extends MusicBeatState
 		FlxG.sound.music.volume = 0;
 		vocals.volume = 0;
 		#if sys
-		sys.io.File.saveContent(FNFAssets.ReplayPath('replay.rpl'), /*SONG.song + curDifficulty + ";" + */replay.toString());
+		if (lime.utils.Assets.exists(FNFAssets.ReplayPath('replay.rpl'))) {
+			sys.io.File.saveContent(FNFAssets.ReplayPath('replay.rpl'), /*SONG.song + curDifficulty + ";" + */replay.toString());
+		}
 		#end
 		if (SONG.validScore)
 		{
