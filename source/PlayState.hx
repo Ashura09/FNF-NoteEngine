@@ -1900,6 +1900,17 @@ class PlayState extends MusicBeatState
 								// FlxG.log.add('played imss note');
 					
 								boyfriend.stunned = true;
+								switch (daNote.noteData) {
+									case 0:
+										boyfriend.playAnim('singLEFTmiss');
+									case 1:
+										boyfriend.playAnim('singDOWNmiss');
+									case 2:
+										boyfriend.playAnim('singUPmiss');
+									case 3:
+										boyfriend.playAnim('singRIGHTmiss');
+								}
+								
 					
 								// get stunned for 5 seconds
 								new FlxTimer().start(5 / 60, function(tmr:FlxTimer)
