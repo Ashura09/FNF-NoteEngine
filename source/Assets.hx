@@ -4,6 +4,9 @@ class FNFAssets {
     public static function GetSparrowAtlas(atlasPath:String) {
         return FlxAtlasFrames.fromSparrow(atlasPath + ".png", atlasPath + ".xml");
     }
+    public static function GetSpriteSheetPacker(atlasPath:String) {
+        return FlxAtlasFrames.fromSpriteSheetPacker(atlasPath + ".png", atlasPath + ".txt");
+    }
     public static function ImagePath(subfolder:String) {
         return "assets/images/" + subfolder;
     }
@@ -15,5 +18,8 @@ class FNFAssets {
     }
     public static function ReplayPath(subfolder:String) {
         return "assets/replays/" + subfolder;
+    }
+    public static function CharacterPath(subfolder:String) {
+        return "assets/chracters/" + subfolder;
     }
 }
