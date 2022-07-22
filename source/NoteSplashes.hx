@@ -7,6 +7,7 @@ class NoteSplash extends FlxSprite
 {
     public var splashData:Int;
     public static var isPixel:Bool = false;
+    public var anims:Array<String> = ["purple", "blue", "green", "red"];
 
     public function new(X:Float = 0, Y:Float = 0, pixel:Bool = false) {
         super();

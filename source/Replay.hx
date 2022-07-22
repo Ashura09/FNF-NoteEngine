@@ -49,9 +49,9 @@ class ReplayParser {
 
     public function new(dataPath:String = 'replay.rpl') {
         var curElement:Int = 0;
-        //if (lime.utils.Assets.exists(FNFAssets.ReplayPath('replay.rpl'))) {
+        if (lime.utils.Assets.exists(FNFAssets.ReplayPath('replay.rpl'))) {
             inputFile = Assets.getText("assets/replays/replay.rpl");
-        //}
+        }
         inputsStrings = inputFile.split(',');
         for (i in 0...inputsStrings.length) {
             switch (curElement) {

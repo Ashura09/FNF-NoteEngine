@@ -84,6 +84,7 @@ class PlayState extends MusicBeatState
 	private var strumLineNotes:FlxTypedGroup<FlxSprite>;
 	private var playerStrums:FlxTypedGroup<FlxSprite>;
 	private var opponentStrums:FlxTypedGroup<FlxSprite>;
+	private var grpNoteSplash:FlxTypedGroup<NoteSplash>;
 
 	private var camZooming:Bool = false;
 	private var curSong:String = "None";
@@ -93,7 +94,7 @@ class PlayState extends MusicBeatState
 	private var songPercent:Float = 0.0;
 	private var combo:Int = 0;
 	private var missedNotes:Int = 0;
-	private var Accuracy:Float = 100.00;
+	private var Accuracy:Float = 1.00;
 	private var songLength:Float = FlxG.sound.music.length;
 	public static var botplay:Bool = Preferences.botplay;
 	public static var nofail:Bool = Preferences.nofail;
@@ -208,6 +209,9 @@ class PlayState extends MusicBeatState
 		
 		//Ratings
 		ratingsData.push(new Rating('sick', 1.0, false, 0)); //default rating
+		// grpNoteSplash.add(new NoteSplash(0,0,isPixelStage));
+		totalNotesHit = 0.0;
+		totalPlayed = 0;
 
 		curStage = SONG.stage;
 		if (curStage == null) {
@@ -1491,7 +1495,7 @@ class PlayState extends MusicBeatState
 
 		scoreTxt.text = "Score:" + songScore;
 		missTxt.text = "Misses:" + missedNotes;
-		accuracyTxt.text = "Accuracy:" + Accuracy;
+		accuracyTxt.text = "Accuracy:" + FlxMath.roundDecimal(Accuracy * 100, 2);
 		songTxt.text = curSong + " - " + CoolUtil.fancyDifficulty();
 		botplayTxt.text = "BOTPLAY";
 
@@ -1499,8 +1503,8 @@ class PlayState extends MusicBeatState
 
 		songPercent = (Conductor.songPosition / songLength);
 
-		if (Accuracy > 100.0) Accuracy = 100.0;
-		if (Accuracy < 0.0) Accuracy = 0.0;
+		// if (Accuracy > 1.0) Accuracy = 1.0;
+		// if (Accuracy < 0.0) Accuracy = 0.0;
 
 		if (FlxG.keys.justPressed.ENTER && startedCountdown && canPause)
 		{
@@ -2183,8 +2187,8 @@ class PlayState extends MusicBeatState
 	{
 		if(totalPlayed != 0)
 		{
-			Accuracy = 100 / (totalPlayed / totalNotesHit);
-			Accuracy = FlxMath.roundDecimal(Accuracy, 2);
+			Accuracy = Math.min(1, Math.max(0, totalNotesHit / totalPlayed));
+			trace("Total: " + totalPlayed + ", Hit: " + totalNotesHit);
 		}
 	}
 
@@ -2492,39 +2496,39 @@ class PlayState extends MusicBeatState
 				if (!note.isSustainNote)
 				{
 					if (ratingsData[ratingsData.length-1].splashes) {
-						switch (note.noteData)
+						/*switch (note.noteData)
 						{
 							case 0:
-								var NoteSplash = new NoteSplash(note.x, strumLine.y, false);
-								NoteSplash.cameras = [camHUD];
-								add(NoteSplash);
-								//NoteSplash.offset.x = -9;
-								NoteSplash.animation.play('purple');
 							case 1:
-								var NoteSplash = new NoteSplash(note.x, strumLine.y, false);
+								var NoteSplash = new NoteSplash(strumLineNotes.members[note.noteData].x, strumLine.y, false);
 								NoteSplash.cameras = [camHUD];
 								add(NoteSplash);
 								//NoteSplash.offset.x = -114;
 								NoteSplash.animation.play('blue');
 							case 2:
-								var NoteSplash = new NoteSplash(note.x, strumLine.y, false);
+								var NoteSplash = new NoteSplash(strumLineNotes.members[note.noteData].x, strumLine.y, false);
 								NoteSplash.cameras = [camHUD];
 								add(NoteSplash);
 								//NoteSplash.offset.x = -241;
 								NoteSplash.animation.play('green');
 							case 3:
-								var NoteSplash = new NoteSplash(note.x, strumLine.y, false);
+								var NoteSplash = new NoteSplash(strumLineNotes.members[note.noteData].x, strumLine.y, false);
 								NoteSplash.cameras = [camHUD];
 								add(NoteSplash);
 								//NoteSplash.offset.x = -353;
 								NoteSplash.animation.play('red');
-						}
+						}*/
+						var splash = new NoteSplash(playerStrums.members[note.noteData].x, strumLine.y, false);
+						// grpNoteSplash.add(splash);
+						splash.cameras = [camHUD];
+						add(splash);
+						splash.animation.play(splash.anims[note.noteData]);
 					}				
 					note.kill();
 					notes.remove(note, true);
 					note.destroy();
-					recalculateAccuracy();
 				}
+				recalculateAccuracy();
 			}
 		}
 	
