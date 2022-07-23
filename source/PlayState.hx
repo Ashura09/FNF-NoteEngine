@@ -617,7 +617,7 @@ class PlayState extends MusicBeatState
 
 		dad.x += dad.movePos[0];
 		dad.y += dad.movePos[1];
-		camPos.set(dad.getGraphicMidpoint().x + dad.camPos[0], dad.getGraphicMidpoint().y + dad.camPos[1]);
+		// camPos.set(dad.getGraphicMidpoint().x + dad.camPos[0], dad.getGraphicMidpoint().y + dad.camPos[1]);
 
 		boyfriend = new Boyfriend(770, 450, SONG.player1);
 
@@ -1582,17 +1582,8 @@ class PlayState extends MusicBeatState
 				camFollow.setPosition(dad.getMidpoint().x + 150, dad.getMidpoint().y - 100);
 				// camFollow.setPosition(lucky.getMidpoint().x - 120, lucky.getMidpoint().y + 210);
 
-				switch (dad.curCharacter)
-				{
-					case 'mom':
-						camFollow.y = dad.getMidpoint().y;
-					case 'senpai':
-						camFollow.y = dad.getMidpoint().y - dad.camPos[1];
-						camFollow.x = dad.getMidpoint().x - dad.camPos[0];
-					case 'senpai-angry':
-						camFollow.y = dad.getMidpoint().y - dad.camPos[1];
-						camFollow.x = dad.getMidpoint().x - dad.camPos[0];
-				}
+				camFollow.x += dad.camPos[0];
+				camFollow.y += dad.camPos[1];
 
 				if (dad.curCharacter == 'mom')
 					vocals.volume = 1;
@@ -1620,6 +1611,9 @@ class PlayState extends MusicBeatState
 						camFollow.x = boyfriend.getMidpoint().x - 200;
 						camFollow.y = boyfriend.getMidpoint().y - 200;
 				}
+
+				camFollow.x += boyfriend.camPos[0];
+				camFollow.y += boyfriend.camPos[1];
 
 				if (SONG.song.toLowerCase() == 'tutorial')
 				{
