@@ -13,3 +13,4 @@ An another FNF engine with some additions. Targeting to ease of modding, and a b
 - Non-working achievements and options :)
 - Nice looking note-splashes
 - Custom characters
+- Cool freeplay menu like in Week 7 update
