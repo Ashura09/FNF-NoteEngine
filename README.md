@@ -11,6 +11,7 @@ An another FNF engine with some additions. Targeting to ease of modding, and a b
 - Miss count
 - Slightly reworked UI
 - Non-working achievements and options :)
+- Psych Engine-like botplay
 - Nice looking note-splashes
-- Custom characters
+- Custom characters (compatible with PE)
 - Cool freeplay menu like in Week 7 update
