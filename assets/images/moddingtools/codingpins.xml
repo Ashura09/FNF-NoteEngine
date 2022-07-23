@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="codingpins.png">
+	<!-- Created with Adobe Animate version 20.5.1.31044 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="executionPin0000" x="0" y="0" width="46" height="81" frameX="0" frameY="-1" frameWidth="46" frameHeight="82"/>
+	<SubTexture name="executionPin0001" x="46" y="0" width="45" height="73" frameX="0" frameY="-5" frameWidth="46" frameHeight="82"/>
+	<SubTexture name="executionPin0002" x="91" y="0" width="45" height="80" frameX="-1" frameY="0" frameWidth="46" frameHeight="82"/>
+	<SubTexture name="executionPinSplash0000" x="136" y="0" width="60" height="41" frameX="-32" frameY="0" frameWidth="125" frameHeight="41"/>
+	<SubTexture name="executionPinSplash0001" x="196" y="0" width="101" height="23" frameX="-12" frameY="-9" frameWidth="125" frameHeight="41"/>
+	<SubTexture name="executionPinSplash0002" x="297" y="0" width="125" height="8" frameX="0" frameY="-16" frameWidth="125" frameHeight="41"/>
+	<SubTexture name="executionPinUsed0000" x="422" y="0" width="46" height="81" frameX="0" frameY="-1" frameWidth="46" frameHeight="82"/>
+	<SubTexture name="executionPinUsed0001" x="0" y="81" width="45" height="73" frameX="0" frameY="-5" frameWidth="46" frameHeight="82"/>
+	<SubTexture name="executionPinUsed0002" x="45" y="81" width="45" height="80" frameX="-1" frameY="0" frameWidth="46" frameHeight="82"/>
+	<SubTexture name="valuePin0000" x="90" y="81" width="57" height="42" frameX="-2" frameY="0" frameWidth="61" frameHeight="43"/>
+	<SubTexture name="valuePin0001" x="147" y="81" width="59" height="42" frameX="-1" frameY="-1" frameWidth="61" frameHeight="43"/>
+	<SubTexture name="valuePin0002" x="206" y="81" width="61" height="42" frameX="0" frameY="-1" frameWidth="61" frameHeight="43"/>
+	<SubTexture name="valuePinSplash0000" x="267" y="81" width="55" height="57" frameX="-3" frameY="-7" frameWidth="72" frameHeight="76"/>
+	<SubTexture name="valuePinSplash0001" x="322" y="81" width="64" height="64" frameX="-2" frameY="-3" frameWidth="72" frameHeight="76"/>
+	<SubTexture name="valuePinSplash0002" x="386" y="81" width="72" height="76"/>
+	<SubTexture name="valuePinUsed0000" x="0" y="161" width="57" height="42" frameX="-2" frameY="0" frameWidth="61" frameHeight="43"/>
+	<SubTexture name="valuePinUsed0001" x="57" y="161" width="59" height="42" frameX="-1" frameY="-1" frameWidth="61" frameHeight="43"/>
+	<SubTexture name="valuePinUsed0002" x="116" y="161" width="61" height="42" frameX="0" frameY="-1" frameWidth="61" frameHeight="43"/>
+</TextureAtlas>
