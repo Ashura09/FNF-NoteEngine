@@ -1861,7 +1861,8 @@ class PlayState extends MusicBeatState
 								{
 									health = 0;
 								}
-								health -= 0.0475;
+								if (daNote.isSustainNote) health -= 0.0475 / 2;
+								else health -= 0.0475;
 								vocals.volume = 0;
 								missedNotes++;
 								combo = 0;
@@ -1872,7 +1873,7 @@ class PlayState extends MusicBeatState
 								// FlxG.sound.play('assets/sounds/missnote1' + TitleState.soundExt, 1, false);
 								// FlxG.log.add('played imss note');
 					
-								boyfriend.stunned = true;
+								// boyfriend.stunned = true;
 								switch (daNote.noteData) {
 									case 0:
 										boyfriend.playAnim('singLEFTmiss');
@@ -1885,11 +1886,11 @@ class PlayState extends MusicBeatState
 								}
 								
 					
-								// get stunned for 5 seconds
-								new FlxTimer().start(5 / 60, function(tmr:FlxTimer)
-								{
-									boyfriend.stunned = false;
-								});
+								// // get stunned for 5 seconds
+								// new FlxTimer().start(5 / 60, function(tmr:FlxTimer)
+								// {
+								// 	boyfriend.stunned = false;
+								// });
 						}
 
 						daNote.active = false;
@@ -2649,7 +2650,11 @@ class PlayState extends MusicBeatState
 				if (SONG.notes[Math.floor(curStep / 16)].mustHitSection)
 					dad.dance();
 				if (!SONG.notes[Math.floor(curStep / 16)].mustHitSection && botplay)
-					boyfriend.dance();
+					new FlxTimer().start(0.5, function(timer:FlxTimer) {
+						if (!SONG.notes[Math.floor(curStep / 16)].mustHitSection && botplay) {
+							boyfriend.dance();
+						}
+					});
 			}
 			// FlxG.log.add('change bpm' + SONG.notes[Std.int(curStep / 16)].changeBPM);
 			wiggleShit.update(Conductor.crochet);
