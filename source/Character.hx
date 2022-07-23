@@ -3,6 +3,7 @@ package;
 import Assets.FNFAssets;
 import flixel.util.FlxColor;
 import flixel.FlxSprite;
+import flixel.addons.effects.FlxTrail;
 import flixel.animation.FlxBaseAnimation;
 import flixel.graphics.frames.FlxAtlasFrames;
 import haxe.format.JsonParser;
@@ -25,7 +26,8 @@ typedef CharacterFile = {
 
 	var position:Array<Float>;
 	var camera_position:Array<Float>;
-
+	
+	var trail:Array<Float>;
 	var flip_x:Bool;
 	var no_antialiasing:Bool;
 	var healthbar_colors:Array<Int>;
@@ -50,12 +52,15 @@ class Character extends FlxSprite
 
 	public var healthColor:Int = 0xFFFF0000;
 
+	public var hasTrail:Bool = false;
+	public var trail:FlxTrail;
+
 	public var holdTimer:Float = 0;
 	public var camPos:Array<Float> = [0.0,0.0];
+	public var movePos:Array<Float> = [0.0,0.0];
 
 	public function new(x:Float, y:Float, ?character:String = "bf", ?isPlayer:Bool = false)
 	{
-		trace("Pre-super");
 		animOffsets = new Map<String, Array<Dynamic>>();
 		super(x, y);
 
@@ -92,21 +97,26 @@ class Character extends FlxSprite
 					addOffset(json.animations[i].anim, json.animations[i].offsets[0], json.animations[i].offsets[1]);
 				}
 				healthColor = FlxColor.fromRGB(json.healthbar_colors[0], json.healthbar_colors[1], json.healthbar_colors[2]);
-				x += json.position[0];
-				y += json.position[1];
 				antialiasing = !json.no_antialiasing;
 				flipX = json.flip_x;
-				camPos[0] = json.camera_position[0];
-				camPos[1] = json.camera_position[1];
 				if (json.scale != 1) {
 					setGraphicSize(Std.int(width * json.scale));
 					updateHitbox();
 				}
+				camPos[0] = json.camera_position[0];
+				camPos[1] = json.camera_position[1];
+				movePos[0] = json.position[0];
+				movePos[1] = json.position[1];
 				if (animation.getNameList().contains("danceRight")) {
 					playAnim('danceRight');
 				}
 				else {
 					playAnim('idle');
+				}
+				if (json.trail != null && json.trail.length > 0) 
+				{
+					trail = new FlxTrail(this, null, Std.int(json.trail[0]), Std.int(json.trail[1]), json.trail[2], json.trail[3]);
+					hasTrail = true;
 				}
 				trace("JSON Character Loaded!\nInfo: " + curCharacter + "\nPath: " + path);
 		}

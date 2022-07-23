@@ -597,6 +597,9 @@ class PlayState extends MusicBeatState
 		gf.scrollFactor.set(0.95, 0.95);
 		
 		dad = new Character(100, 100, SONG.player2);
+		if (dad.hasTrail) {
+			add(dad.trail);
+		}
 
 		var camPos:FlxPoint = new FlxPoint(dad.getGraphicMidpoint().x, dad.getGraphicMidpoint().y);
 
@@ -612,6 +615,8 @@ class PlayState extends MusicBeatState
 				}
 		}
 
+		dad.x += dad.movePos[0];
+		dad.y += dad.movePos[1];
 		camPos.set(dad.getGraphicMidpoint().x + dad.camPos[0], dad.getGraphicMidpoint().y + dad.camPos[1]);
 
 		boyfriend = new Boyfriend(770, 450, SONG.player1);
@@ -640,10 +645,10 @@ class PlayState extends MusicBeatState
 			case 'schoolEvil':
 				// trailArea.scrollFactor.set();
 
-				var evilTrail = new FlxTrail(dad, null, 4, 24, 0.3, 0.069);
+				// var evilTrail = new FlxTrail(dad, null, 4, 24, 0.3, 0.069);
 				// evilTrail.changeValuesEnabled(false, false, false, false);
 				// evilTrail.changeGraphic()
-				add(evilTrail);
+				// add(evilTrail);
 				// evilTrail.scrollFactor.set(1.1, 1.1);
 
 				boyfriend.x += 200;
