@@ -1789,20 +1789,21 @@ class PlayState extends MusicBeatState
 								spr.offset.x -= 13;
 								spr.offset.y -= 13;
 							}
-							var time:Float = 0.15;
+							var notepressTime:Float = 0.15;
 							//if(daNote.isSustainNote && !daNote.animation.curAnim.name.endsWith('end')) {
 							if(daNote.isSustainNote) {
-								time += 0.15;
+								notepressTime += 0.15;
 							}	
-							new FlxTimer().start(time, function(tmr:FlxTimer)
+							new FlxTimer().start(notepressTime, function(tmr:FlxTimer)
 							{
+								tmr.time = notepressTime;
 								// boyfriend.dance();
 								spr.animation.play('static', false);
 								spr.centerOffsets();
 								if (!curStage.startsWith('school'))
 								{
-									//spr.offset.x += 13;
-									//spr.offset.y += 13;
+									// spr.offset.x += 13;
+									// spr.offset.y += 13;
 								}
 							});
 						}
@@ -2175,13 +2176,14 @@ class PlayState extends MusicBeatState
 		if(totalPlayed != 0)
 		{
 			Accuracy = Math.min(1, Math.max(0, totalNotesHit / totalPlayed));
-			trace("Total: " + totalPlayed + ", Hit: " + totalNotesHit);
+			// trace("Total: " + totalPlayed + ", Hit: " + totalNotesHit);
 		}
 	}
 
 	// Making New Input System from scratch! Yay!
-	// Several months:
+	// Several months later:
 	// I copied the input system from kade engine, and slightly edited it
+	// Totally from scratch :thumbsup:
 
 	private function keyShit():Void
 		{	
@@ -2207,43 +2209,43 @@ class PlayState extends MusicBeatState
 			var downR = controls.DOWN_R;
 			var leftR = controls.LEFT_R;
 
-			if (!isReplaying) {
+			// if (!isReplaying) {
 				controlArray = [leftP, downP, upP, rightP];
 				controlHoldArray = [left, down, up, right];
 				controlReleaseArray = [leftR, downR, upR, rightR];
-			}
-			else if (isReplaying) {
-				controlArray = [false, false, false, false];
-				controlHoldArray = [false, false, false, false];
-				controlReleaseArray = [false, false, false, false];
-			}
+			// }
+			// else if (isReplaying) {
+			// 	controlArray = [false, false, false, false];
+			// 	controlHoldArray = [false, false, false, false];
+			// 	controlReleaseArray = [false, false, false, false];
+			// }
 
-			if (isReplaying) {
-				if (isReplaying) {
-					for (i in 0...replayparser.inputs.length) {
-						if (replayparser.inputs[i].strumTime == Math.floor(songPercent * replayAccuracy)) {
-							controlArray[replayparser.inputs[i].noteData] = true;
-							controlHoldArray[replayparser.inputs[i].noteData] = true;
-							trace("Simulating press at: " + replayparser.inputs[i].noteData + ", " + replayparser.inputs[i].strumTime);
-							new FlxTimer().start(replayparser.inputs[i].holdTime, function(timer:FlxTimer) {
-								controlArray[replayparser.inputs[i].noteData] = false;
-								controlHoldArray[replayparser.inputs[i].noteData] = false;
-								trace("Simulating release at: " + replayparser.inputs[i].noteData + ", " + replayparser.inputs[i].strumTime);
-							});
-						}
-					}
-					/**/
-				}
-			}
+			// if (isReplaying) {
+			// 	if (isReplaying) {
+			// 		for (i in 0...replayparser.inputs.length) {
+			// 			if (replayparser.inputs[i].strumTime == Math.floor(songPercent * replayAccuracy)) {
+			// 				controlArray[replayparser.inputs[i].noteData] = true;
+			// 				controlHoldArray[replayparser.inputs[i].noteData] = true;
+			// 				// trace("Simulating press at: " + replayparser.inputs[i].noteData + ", " + replayparser.inputs[i].strumTime);
+			// 				new FlxTimer().start(replayparser.inputs[i].holdTime, function(timer:FlxTimer) {
+			// 					controlArray[replayparser.inputs[i].noteData] = false;
+			// 					controlHoldArray[replayparser.inputs[i].noteData] = false;
+			// 					// trace("Simulating release at: " + replayparser.inputs[i].noteData + ", " + replayparser.inputs[i].strumTime);
+			// 				});
+			// 			}
+			// 		}
+			// 		/**/
+			// 	}
+			// }
 
 			var possibleNotes:Array<Note> = [];
 	
-			if (!isReplaying) {
-				if (controlArray.contains(true)) {
-					replay.inputs.push(new ReplayInput(controlArray.indexOf(true), songPercent * replayAccuracy, 0.25));
-					trace("Recording press: " + controlArray.indexOf(true) + ", " + songPercent * replayAccuracy + ", " + 0.25);
-				}
-			}
+			// if (!isReplaying) {
+			// 	if (controlArray.contains(true)) {
+			// 		replay.inputs.push(new ReplayInput(controlArray.indexOf(true), songPercent * replayAccuracy, 0.25));
+			// 		// trace("Recording press: " + controlArray.indexOf(true) + ", " + songPercent * replayAccuracy + ", " + 0.25);
+			// 	}
+			// }
 
 			if (!boyfriend.stunned && generatedMusic)
 			{
@@ -2251,7 +2253,7 @@ class PlayState extends MusicBeatState
 	
 				notes.forEachAlive(function(daNote:Note)
 				{
-					if (daNote.canBeHit && daNote.mustPress) {
+					if (daNote.canBeHit && daNote.mustPress && !daNote.isSustainNote) {
 						possibleNotes.push(daNote);
 						possibleNotes.sort((a, b) -> Std.int(a.strumTime - b.strumTime));
 					}
@@ -2332,6 +2334,9 @@ class PlayState extends MusicBeatState
 					boyfriend.playAnim('idle');
 				}
 			}
+
+			// trace("HoldTimer: " + boyfriend.holdTimer);
+			
 			playerStrums.forEach(function(spr:FlxSprite)
 			{
 				switch (spr.ID)
@@ -2672,8 +2677,8 @@ class PlayState extends MusicBeatState
 				camHUD.zoom += 0.03;
 			}
 	
-			iconP1.setGraphicSize(Std.int(iconP1.width + 30));
-			iconP2.setGraphicSize(Std.int(iconP2.width + 30));
+			iconP1.setGraphicSize(Std.int(FlxMath.lerp(iconP1.width, iconP1.width + 30, 0.50)));
+			iconP2.setGraphicSize(Std.int(FlxMath.lerp(iconP2.width, iconP2.width + 30, 0.50)));
 	
 			iconP1.updateHitbox();
 			iconP2.updateHitbox();
@@ -2746,6 +2751,17 @@ class PlayState extends MusicBeatState
 			}
 		}
 	
+		override public function onFocusLost():Void
+			{
+				persistentUpdate = false;
+				persistentDraw = true;
+				paused = true;
+	
+				openSubState(new PauseSubState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
+		
+				super.onFocusLost();
+			}
+
 		var curLight:Int = 0;
 
 	}

@@ -13,7 +13,7 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import io.newgrounds.NG;
 import lime.app.Application;
-import moddingtools.ModdingDesktop;
+import moddingtools.Console;
 
 using StringTools;
 
@@ -103,7 +103,7 @@ class MainMenuState extends MusicBeatState
 		}
 
 		if (FlxG.keys.pressed.SEVEN) {
-			FlxG.switchState(new ModdingDesktop());
+			FlxG.switchState(new Console());
 		}
 
 		if (!selectedSomethin)

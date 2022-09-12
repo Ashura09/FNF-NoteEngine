@@ -99,7 +99,7 @@ class FreeplayState extends MusicBeatState
 		scoreBG.alpha = 0.6;
 		add(scoreBG);
 
-		diffText = new FlxText(scoreText.x, scoreText.y + 36, 0, "", 24);
+		diffText = new FlxText(scoreText.x, scoreText.y + 36, Std.int(FlxG.width * 0.35) - 96, "", 24);
 		diffText.font = scoreText.font;
 		diffText.alignment = CENTER;
 		add(diffText);
@@ -148,7 +148,7 @@ class FreeplayState extends MusicBeatState
 			FlxG.sound.music.volume += 0.5 * FlxG.elapsed;
 		}
 
-		lerpScore = Math.floor(FlxMath.lerp(lerpScore, intendedScore, 0.4));
+		lerpScore = Math.floor(FlxMath.lerp(lerpScore, intendedScore, 0.1));
 
 		if (Math.abs(lerpScore - intendedScore) <= 10)
 			lerpScore = intendedScore;
@@ -162,12 +162,12 @@ class FreeplayState extends MusicBeatState
 		if (upP)
 		{
 			changeSelection(-1);
-			FlxG.random.int(0xFF2DF84D, 0xFF2AC47D);
+			// FlxG.random.int(0xFF2DF84D, 0xFF2AC47D);
 		}
 		if (downP)
 		{
 			changeSelection(1);
-			FlxG.random.int(0xFF2DF84D, 0xFF2AC47D);
+			// FlxG.random.int(0xFF2DF84D, 0xFF2AC47D);
 		}
 
 		if (controls.LEFT_P)
@@ -211,11 +211,11 @@ class FreeplayState extends MusicBeatState
 		switch (curDifficulty)
 		{
 			case 0:
-				diffText.text = "< EASY >";
+				diffText.text = "<  EASY  >";
 			case 1:
 				diffText.text = '< NORMAL >';
 			case 2:
-				diffText.text = "< HARD >";
+				diffText.text = "<  HARD  >";
 		}
 	}
 

@@ -47,6 +47,8 @@ class TitleState extends MusicBeatState
 		TitleState.soundExt = '.ogg';
 		#end
 
+		FlxG.autoPause = false;
+
 		PlayerSettings.init();
 
 		curWacky = FlxG.random.getObject(getIntroTextShit());
